@@ -4,7 +4,7 @@ from six.moves import queue, range
 from urllib3.poolmanager import PoolManager
 
 from .response import CURLResponse
-
+import logging
 
 class PoolException(Exception):
     pass
@@ -35,7 +35,7 @@ class CURLHandlerPool(object):
 
         Args:
             curl_request (CURLRequest): an instance of a given CURL request.
-        
+
         Returns:
             CURLResponse: the response of the request.
 
@@ -52,6 +52,7 @@ class CURLHandlerPool(object):
         curl_options.extend(_get_curl_options_for_response(response))
         curl_options.extend(self.get_additional_curl_options())
         for option, value in curl_options:
+            logging.info("option:%s: value:%s:", option, value)
             curl_handler.setopt(option, value)
 
         curl_handler.perform()
@@ -83,7 +84,7 @@ class CURLHandlerPool(object):
 
         except queue.Empty:
             raise EmptyPool("Pool reached maximum size and no more connections are allowed.")
-        
+
         except AttributeError:
             raise ClosedPool("Pool is no longer available")
 
@@ -95,7 +96,7 @@ class CURLHandlerPool(object):
         """
         try:
             self._pool.put(curl_handler, block=False)
-        
+
         except AttributeError:
             pass  # Pool was closed
 
