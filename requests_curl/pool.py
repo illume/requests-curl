@@ -56,7 +56,7 @@ class CURLHandlerPool(object):
             try:
                 curl_handler.setopt(option, value)
             except UnicodeEncodeError:
-                curl_handler.setopt(option, value.encode('iso-8859-1'))
+                curl_handler.setopt(option, bytes(value, 'utf-8'))
 
         curl_handler.perform()
 
