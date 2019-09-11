@@ -52,11 +52,11 @@ class CURLHandlerPool(object):
         curl_options.extend(_get_curl_options_for_response(response))
         curl_options.extend(self.get_additional_curl_options())
         for option, value in curl_options:
-            logging.info("option:%s: value:%s:", option, value)
-            curl_handler.setopt(option, value)
-            # try:
-            # except UnicodeEncodeError:
-            #     curl_handler.setopt(option, value.encode('iso-8859-1'))
+            # logging.info("option:%s: value:%s:", option, value)
+            try:
+                curl_handler.setopt(option, value)
+            except UnicodeEncodeError:
+                curl_handler.setopt(option, value.encode('iso-8859-1'))
 
         curl_handler.perform()
 
