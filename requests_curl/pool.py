@@ -53,10 +53,10 @@ class CURLHandlerPool(object):
         curl_options.extend(self.get_additional_curl_options())
         for option, value in curl_options:
             # logging.info("option:%s: value:%s:", option, value)
-            try:
-                curl_handler.setopt(option, value)
-            except UnicodeEncodeError:
-                curl_handler.setopt(option, bytes(value, 'utf-8'))
+            curl_handler.setopt(option, value)
+            # try:
+            # except UnicodeEncodeError:
+            #     curl_handler.setopt(option, bytes(value, 'utf-8'))
 
         curl_handler.perform()
 
